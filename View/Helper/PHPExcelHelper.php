@@ -1,9 +1,17 @@
 <?php
-App::uses('AppHelper', 'Helper');
+
+App::uses('AppHelper', 'View/Helper');
 
 /**
  * Helper for working with PHPExcel class.
  * PHPExcel has to be in the vendors directory.
+ *
+ * Original class from
+ * <http://bakery.cakephp.org/articles/segy/2012/04/02/phpexcel_helper_for_generating_excel_files>
+ * resp.
+ * <https://github.com/segy/PhpExcel>
+ *
+ * Several improvements being made in refereemanager project.
  */
 
 class PhpExcelHelper extends AppHelper {
@@ -18,18 +26,18 @@ class PhpExcelHelper extends AppHelper {
 	 */
 	protected $row = 1;
 	/**
-	 * Internal table params 
+	 * Internal table params
 	 * @var array
 	 */
 	protected $tableParams;
-	
+
 	/**
 	 * Constructor
 	 */
 	public function __construct(View $view, $settings = array()) {
-        parent::__construct($view, $settings);
-    }
-	
+				parent::__construct($view, $settings);
+		}
+
 	/**
 	 * Create new worksheet
 	 */
@@ -37,7 +45,7 @@ class PhpExcelHelper extends AppHelper {
 		$this->loadEssentials();
 		$this->xls = new PHPExcel();
 	}
-	
+
 	/**
 	 * Create new worksheet from existing file
 	 */
@@ -45,14 +53,14 @@ class PhpExcelHelper extends AppHelper {
 		$this->loadEssentials();
 		$this->xls = PHPExcel_IOFactory::load($path);
 	}
-	
+
 	/**
 	 * Set row pointer
 	 */
 	public function setRow($to) {
 		$this->row = (int)$to;
 	}
-	
+
 	/**
 	 * Set default font
 	 */
@@ -60,7 +68,7 @@ class PhpExcelHelper extends AppHelper {
 		$this->xls->getDefaultStyle()->getFont()->setName($name);
 		$this->xls->getDefaultStyle()->getFont()->setSize($size);
 	}
-	
+
 	/**
 	 * Start table
 	 * inserts table header and sets table params
@@ -75,25 +83,26 @@ class PhpExcelHelper extends AppHelper {
 	 * 	size	-	font size
 	 * 	bold	-	true for bold text
 	 * 	italic	-	true for italic text
-	 * 	
+	 *
 	 */
 	public function addTableHeader($data, $params = array()) {
 		// offset
+		$offset = 0;
 		if (array_key_exists('offset', $params))
 			$offset = is_numeric($params['offset']) ? (int)$params['offset'] : PHPExcel_Cell::columnIndexFromString($params['offset']);
 		// font name
 		if (array_key_exists('font', $params))
-			$this->xls->getActiveSheet()->getStyle($this->row)->getFont()->setName($params['font_name']);
+			$this->xls->getActiveSheet()->getStyle($this->row)->getFont()->setName($params['font']);
 		// font size
 		if (array_key_exists('size', $params))
-			$this->xls->getActiveSheet()->getStyle($this->row)->getFont()->setSize($params['font_size']);
+			$this->xls->getActiveSheet()->getStyle($this->row)->getFont()->setSize($params['size']);
 		// bold
 		if (array_key_exists('bold', $params))
 			$this->xls->getActiveSheet()->getStyle($this->row)->getFont()->setBold($params['bold']);
 		// italic
 		if (array_key_exists('italic', $params))
 			$this->xls->getActiveSheet()->getStyle($this->row)->getFont()->setItalic($params['italic']);
-		
+
 		// set internal params that need to be processed after data are inserted
 		$this->tableParams = array(
 			'header_row' => $this->row,
@@ -103,7 +112,7 @@ class PhpExcelHelper extends AppHelper {
 			'filter' => array(),
 			'wrap' => array()
 		);
-		
+
 		foreach ($data as $d) {
 			// set label
 			$this->xls->getActiveSheet()->setCellValueByColumnAndRow($offset, $this->row, $d['label']);
@@ -120,25 +129,25 @@ class PhpExcelHelper extends AppHelper {
 			// wrap
 			if (array_key_exists('wrap', $d) && $d['wrap'])
 				$this->tableParams['wrap'][] = $offset;
-			
+
 			$offset++;
 		}
-		$this->row++;	
+		$this->row++;
 	}
-	
+
 	/**
 	 * Write array of data to actual row
 	 */
 	public function addTableRow($data) {
 		$offset = $this->tableParams['offset'];
-		
+
 		foreach ($data as $d) {
 			$this->xls->getActiveSheet()->setCellValueByColumnAndRow($offset++, $this->row, $d);
 		}
 		$this->row++;
 		$this->tableParams['row_count']++;
 	}
-	
+
 	/**
 	 * End table
 	 * sets params and styles that required data to be inserted
@@ -154,7 +163,7 @@ class PhpExcelHelper extends AppHelper {
 		foreach ($this->tableParams['wrap'] as $col)
 			$this->xls->getActiveSheet()->getStyle(PHPExcel_Cell::stringFromColumnIndex($col).($this->tableParams['header_row'] + 1).':'.PHPExcel_Cell::stringFromColumnIndex($col).($this->tableParams['header_row'] + $this->tableParams['row_count']))->getAlignment()->setWrapText(true);
 	}
-	
+
 	/**
 	 * Write array of data to actual row starting from column defined by offset
 	 * Offset can be textual or numeric representation
@@ -163,13 +172,13 @@ class PhpExcelHelper extends AppHelper {
 		// solve textual representation
 		if (!is_numeric($offset))
 			$offset = PHPExcel_Cell::columnIndexFromString($offset);
-		
+
 		foreach ($data as $d) {
 			$this->xls->getActiveSheet()->setCellValueByColumnAndRow($offset++, $this->row, $d);
 		}
 		$this->row++;
 	}
-	
+
 	/**
 	 * Output file to browser
 	 */
@@ -186,7 +195,7 @@ class PhpExcelHelper extends AppHelper {
 		// clear memory
 		$this->xls->disconnectWorksheets();
 	}
-	
+
 	/**
 	 * Load vendor classes
 	 */
