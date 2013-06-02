@@ -35,8 +35,8 @@ In your Controller add the line:
 
 In your View add the lines:
 
-	$this->PhpExcel->createWorksheet();
-	$this->PhpExcel->setDefaultFont('Calibri', 12);
+	// create worksheet with default font
+	$this->PhpExcel->createWorksheet('Calibri', 12);
 
 	// define table cells
 	$table = array(

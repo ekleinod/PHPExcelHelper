@@ -22,33 +22,37 @@ class PHPExcelHelper extends AppHelper {
 	 * Instance of PHPExcel class
 	 * @var object
 	 */
-	public $xls;
+	public $xls = null;
 
 	/**
 	 * Pointer to actual row
 	 * @var int
 	 */
-	protected $row = 1;
+	private $row = 1;
 
 	/**
 	 * Internal table params
 	 * @var array
 	 */
-	protected $tableParams;
+	private $tableParams = null;
 
 	/**
 	 * Constructor
 	 */
 	public function __construct(View $view, $settings = array()) {
-				parent::__construct($view, $settings);
-		}
+		parent::__construct($view, $settings);
+	}
 
 	/**
-	 * Create new worksheet
+	 * Create new worksheet.
+	 *
+	 * @param theFontName default font name (optional)
+	 * @param theFontSize default font size (optional)
 	 */
-	public function createWorksheet() {
+	public function createWorksheet($theFontName = null, $theFontSize = null) {
 		$this->loadEssentials();
 		$this->xls = new PHPExcel();
+		$this->setDefaultFont($theFontName, $theFontSize);
 	}
 
 	/**
@@ -60,35 +64,58 @@ class PHPExcelHelper extends AppHelper {
 	}
 
 	/**
+	 * Load vendor classes
+	 */
+	private function loadEssentials() {
+		App::import('Vendor', 'PHPExcel/Classes/PHPExcel');
+		if (!class_exists('PHPExcel')) {
+			throw new CakeException('Vendor class PHPExcel not found!');
+		}
+	}
+
+	/**
 	 * Set row pointer
 	 */
 	public function setRow($to) {
-		$this->row = (int)$to;
+		$this->row = (int) $to;
 	}
 
 	/**
-	 * Set default font
-	 */
-	public function setDefaultFont($name, $size) {
-		$this->xls->getDefaultStyle()->getFont()->setName($name);
-		$this->xls->getDefaultStyle()->getFont()->setSize($size);
-	}
-
-	/**
-	 * Start table
-	 * inserts table header and sets table params
-	 * Possible keys for data:
-	 * 	label 	-	table heading
-	 * 	width	-	"auto" or units
-	 * 	filter	-	true to set excel filter for column
-	 * 	wrap	-	true to wrap text in column
-	 * Possible keys for params:
-	 * 	offset	-	column offset (numeric or text)
-	 * 	font	-	font name
-	 * 	size	-	font size
-	 * 	bold	-	true for bold text
-	 * 	italic	-	true for italic text
+	 * Set default font.
 	 *
+	 * @param theFontName default font name (optional)
+	 * @param theFontSize default font size (optional)
+	 */
+	public function setDefaultFont(($theFontName = null, $theFontSize = null)) {
+		if ($theFontName != null) {
+			$this->xls->getDefaultStyle()->getFont()->setName($theFontName);
+		}
+		if ($theFontSize != null) {
+			$this->xls->getDefaultStyle()->getFont()->setSize($theFontSize);
+		}
+	}
+
+	/**
+	 * Adds a table header with the given formatting.
+	 *
+	 * Formatting can be given for each cell. If a formatting is given
+	 * as second parameter, it is used for each cell. Indidividual cell formats
+	 * override second-parameter-formats.
+	 *
+	 * Possible format keys:
+	 *
+	 * - *label* entry text
+	 * - *width* column width - "auto" or units
+	 * - *filter* set filter to column? - "true" or "false" (default)
+	 * - *wrap*	wrap text in column? - "true" or "false" (default)
+	 * - *offset* column offset - numeric or text
+	 * - *font* font name
+	 * - *size* font size
+	 * - *bold* bold text - "true" or "false" (default)
+	 * - *italic* italic text - "true" or "false" (default)
+	 *
+	 * @param theEntries data holding entries
+	 * @param theGlobalParams global parameters
 	 */
 	public function addTableHeader($data, $params = array()) {
 		// offset
@@ -199,17 +226,6 @@ class PHPExcelHelper extends AppHelper {
 		$objWriter->save('php://output');
 		// clear memory
 		$this->xls->disconnectWorksheets();
-	}
-
-	/**
-	 * Load vendor classes
-	 */
-	protected function loadEssentials() {
-		// load vendor class
-		App::import('Vendor', 'PHPExcel/Classes/PHPExcel');
-		if (!class_exists('PHPExcel')) {
-			throw new CakeException('Vendor class PHPExcel not found!');
-		}
 	}
 
 }
