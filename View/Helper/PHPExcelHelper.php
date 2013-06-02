@@ -3,28 +3,33 @@
 App::uses('AppHelper', 'View/Helper');
 
 /**
- * Helper for working with PHPExcel class.
- * PHPExcel has to be in the vendors directory.
+ * PHPExcelHelper encapsulates work wih the PHPExcel classes.
  *
- * Original class from
- * <http://bakery.cakephp.org/articles/segy/2012/04/02/phpexcel_helper_for_generating_excel_files>
- * resp.
- * <https://github.com/segy/PhpExcel>
+ * PHPExcel: <http://phpexcel.codeplex.com/>
  *
- * Several improvements being made in refereemanager project.
+ * This class is a fork of PhpExcelHelper: <https://github.com/segy/PhpExcel>
+ *
+ * This fork concentrates on a more complex but user friendly interface to data adding.
+ *
+ * @author Ekkart Kleinod https://github.com/ekleinod/
+ * <https://github.com/ekleinod/PHPExcelHelper>
+ *
+ * @version 1.0.1
  */
+class PHPExcelHelper extends AppHelper {
 
-class PhpExcelHelper extends AppHelper {
 	/**
 	 * Instance of PHPExcel class
 	 * @var object
 	 */
 	public $xls;
+
 	/**
 	 * Pointer to actual row
 	 * @var int
 	 */
 	protected $row = 1;
+
 	/**
 	 * Internal table params
 	 * @var array
@@ -206,4 +211,7 @@ class PhpExcelHelper extends AppHelper {
 			throw new CakeException('Vendor class PHPExcel not found!');
 		}
 	}
+
 }
+
+/* EOF */
