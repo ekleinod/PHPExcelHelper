@@ -19,7 +19,7 @@ In order to use the functions, follow these steps:
 
 	`app/Vendor/PHPExcel`
 
-	Now you should have a structure
+	Now you should have a structure like
 
 	`app/Vendor/PHPExcel/Classes/PHPExcel/...`
 2. copy the *PHPExcelHelper* class to
