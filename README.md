@@ -31,7 +31,7 @@ In order to use the functions, follow these steps:
 
 In your Controller add the line:
 
-	public $helpers = array('PHPExcelHelper');
+	public $helpers = array('PHPExcel');
 
 In your View add the lines:
 
