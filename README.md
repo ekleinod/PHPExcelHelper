@@ -53,11 +53,11 @@ In your View add the lines:
 	// data
 	foreach ($data as $d) {
 		$this->PhpExcel->addTableRow(array(
-			$d['User']['name'],
-			$d['Type']['name'],
-			$d['User']['date'],
-			$d['User']['description'],
-			$d['User']['modified']
+			array('label' => $d['User']['name']),
+			array('label' => $d['Type']['name']),
+			array('label' => $d['User']['date']),
+			array('label' => $d['User']['description']),
+			array('label' => $d['User']['modified'])
 		));
 	}
 
