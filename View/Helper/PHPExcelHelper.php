@@ -86,7 +86,7 @@ class PHPExcelHelper extends AppHelper {
 	 * @param theFontName default font name (optional)
 	 * @param theFontSize default font size (optional)
 	 */
-	public function setDefaultFont(($theFontName = null, $theFontSize = null)) {
+	public function setDefaultFont($theFontName = null, $theFontSize = null) {
 		if ($theFontName != null) {
 			$this->xls->getDefaultStyle()->getFont()->setName($theFontName);
 		}
