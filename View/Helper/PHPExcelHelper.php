@@ -149,6 +149,7 @@ class PHPExcelHelper extends AppHelper {
 	 * - *size* font size
 	 * - *bold* bold text - "true" or "false" (default)
 	 * - *italic* italic text - "true" or "false" (default)
+	 * - *color* text color
 	 * - *width* column width - "auto" or units (headers only)
 	 * - *filter* set filter to column? - "true" or "false" (default) (headers only)
 	 * - *wrap*	wrap text in column? - "true" or "false" (default) (headers only)
@@ -185,22 +186,22 @@ class PHPExcelHelper extends AppHelper {
 
 					case 'font':
 						$this->xls->getActiveSheet()->getStyleByColumnAndRow($currentColumn, $this->row)->getFont()->setName($entryValue);
-						//$this->xls->getActiveSheet()->getStyle($this->row)->getFont()->setName($theGlobalParams['font']);
 						break;
 
 					case 'size':
 						$this->xls->getActiveSheet()->getStyleByColumnAndRow($currentColumn, $this->row)->getFont()->setSize($entryValue);
-						//$this->xls->getActiveSheet()->getStyle($this->row)->getFont()->setSize($theGlobalParams['size']);
 						break;
 
 					case 'bold':
 						$this->xls->getActiveSheet()->getStyleByColumnAndRow($currentColumn, $this->row)->getFont()->setBold($entryValue);
-						//$this->xls->getActiveSheet()->getStyle($this->row)->getFont()->setBold($theGlobalParams['bold']);
 						break;
 
 					case 'italic':
 						$this->xls->getActiveSheet()->getStyleByColumnAndRow($currentColumn, $this->row)->getFont()->setItalic($entryValue);
-						//$this->xls->getActiveSheet()->getStyle($this->row)->getFont()->setItalic($theGlobalParams['italic']);
+						break;
+
+					case 'color':
+						$this->xls->getActiveSheet()->getStyleByColumnAndRow($currentColumn, $this->row)->getFont()->getColor()->applyFromArray(array("rgb" => $entryValue));
 						break;
 
 					case 'width':
