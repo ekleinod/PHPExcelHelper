@@ -74,10 +74,12 @@ class PHPExcelHelper extends AppHelper {
 	}
 
 	/**
-	 * Set row pointer
+	 * Set row pointer.
+	 *
+	 * @param theRow row to set to
 	 */
-	public function setRow($to) {
-		$this->row = (int) $to;
+	public function setRow($theRow) {
+		$this->row = (int) $theRow;
 	}
 
 	/**
@@ -109,6 +111,7 @@ class PHPExcelHelper extends AppHelper {
 	 * - *size* font size
 	 * - *bold* bold text - "true" or "false" (default)
 	 * - *italic* italic text - "true" or "false" (default)
+	 * - *color* text color
 	 * - *width* column width - "auto" or units
 	 * - *filter* set filter to column? - "true" or "false" (default)
 	 * - *wrap*	wrap text in column? - "true" or "false" (default)
@@ -153,7 +156,6 @@ class PHPExcelHelper extends AppHelper {
 	 * - *width* column width - "auto" or units (headers only)
 	 * - *filter* set filter to column? - "true" or "false" (default) (headers only)
 	 * - *wrap*	wrap text in column? - "true" or "false" (default) (headers only)
-	 * - *offset* column offset - numeric or text (headers only)
 	 *
 	 * @param theEntries data holding entries
 	 * @param theGlobalParams global parameters
