@@ -165,9 +165,9 @@ class PHPExcelHelper extends AppHelper {
 
 		// use global params
 		foreach ($theGlobalParams as $paramKey => $paramValue) {
-			foreach ($theEntries as &$entry) {
-				if (!array_key_exists($paramKey, $entry)) {
-					$entry[$paramKey] = $paramValue;
+			foreach ($theEntries as &$entryEdit) {
+				if (!array_key_exists($paramKey, $entryEdit)) {
+					$entryEdit[$paramKey] = $paramValue;
 				}
 			}
 		}
