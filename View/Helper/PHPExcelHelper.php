@@ -112,15 +112,15 @@ class PHPExcelHelper extends AppHelper {
 	 * - *bold* bold text - "true" or "false" (default)
 	 * - *italic* italic text - "true" or "false" (default)
 	 * - *color* text color
+	 * - *wrap* wrap text - "true" or "false" (default)
 	 * - *width* column width - "auto" or units
 	 *
 	 * @param theEntries data holding entries
 	 * @param theGlobalParams global parameters
 	 * @param theColOffset column offset
 	 * @param theFilter switch on filter?
-	 * @param theWrap switch on word wrap?
 	 */
-	public function addTableHeader($theEntries, $theGlobalParams = array(), $theColOffset = 0, $theFilter = false, $theWrap = false) {
+	public function addTableHeader($theEntries, $theGlobalParams = array(), $theColOffset = 0, $theFilter = false) {
 
 		// set internal params that need to be processed after data are inserted
 		$this->tableParams = array(
@@ -129,8 +129,8 @@ class PHPExcelHelper extends AppHelper {
 			'row_count' => 0,
 			'col_count' => 0,
 			'filter' => ($theFilter == true),
-			'wrap' => ($theWrap == true),
-			'auto_width' => array()
+			'auto_width' => array(),
+			'wrap' => array()
 		);
 
 		// insert entries
@@ -154,6 +154,7 @@ class PHPExcelHelper extends AppHelper {
 	 * - *bold* bold text - "true" or "false" (default)
 	 * - *italic* italic text - "true" or "false" (default)
 	 * - *color* text color
+	 * - *wrap* wrap text - "true" or "false" (default)
 	 * - *width* column width - "auto" or units (headers only)
 	 *
 	 * @param theEntries data holding entries
@@ -205,6 +206,12 @@ class PHPExcelHelper extends AppHelper {
 						$this->xls->getActiveSheet()->getStyleByColumnAndRow($currentColumn, $this->row)->getFont()->getColor()->applyFromArray(array("rgb" => $entryValue));
 						break;
 
+					case 'wrap':
+						if ($entryValue) {
+							$this->tableParams['wrap'][] = $currentColumn;
+						}
+						break;
+
 					case 'width':
 						if ($isHeader) {
 							if ($entryValue == 'auto') {
@@ -246,17 +253,15 @@ class PHPExcelHelper extends AppHelper {
 					PHPExcel_Cell::stringFromColumnIndex($this->tableParams['col_offset'] + $this->tableParams['col_count']),
 					$this->tableParams['row_count']));
 		}
-/*
-		if (count($this->tableParams['filter'])) {
-			$this->xls->getActiveSheet()->setAutoFilter(
-				PHPExcel_Cell::stringFromColumnIndex($this->tableParams['filter'][0]) . ($this->tableParams['header_row']) . ':' . PHPExcel_Cell::stringFromColumnIndex($this->tableParams['filter'][count($this->tableParams['filter']) - 1]) . ($this->tableParams['header_row'] + $this->tableParams['row_count']));
-		}
-*/
 
 		// wrap
-/*		foreach ($this->tableParams['wrap'] as $col) {
-			$this->xls->getActiveSheet()->getStyle(PHPExcel_Cell::stringFromColumnIndex($col).($this->tableParams['header_row'] + 1).':'.PHPExcel_Cell::stringFromColumnIndex($col).($this->tableParams['header_row'] + $this->tableParams['row_count']))->getAlignment()->setWrapText(true);
-		}*/
+		foreach ($this->tableParams['wrap'] as $col) {
+			$this->xls->getActiveSheet()->getStyle(sprintf('%s%d:%s%d',
+					PHPExcel_Cell::stringFromColumnIndex($col),
+					$this->tableParams['header_row'],
+					PHPExcel_Cell::stringFromColumnIndex($col),
+					$this->tableParams['header_row'] + $this->tableParams['col_count']))->getAlignment()->setWrapText(true);
+		}
 
 	}
 
