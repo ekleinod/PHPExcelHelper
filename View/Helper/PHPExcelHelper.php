@@ -199,17 +199,20 @@ class PHPExcelHelper extends AppHelper {
 		}
 
 		// use column params
-/*		$currentColumn = $this->tableParams['col_offset'];
+		$currentColumn = $this->tableParams['col_offset'];
 		foreach ($theEntries as &$entryColumn) {
 			if (array_key_exists($currentColumn, $this->tableParams['col_params'])) {
+
+		//throw new CakeException(print_r($this->tableParams['col_params'][$currentColumn], true));
+
 				foreach ($this->tableParams['col_params'][$currentColumn] as $paramKey => $paramValue) {
-					if (!array_key_exists($paramValue, $entryColumn)) {
+					if (!array_key_exists($paramKey, $entryColumn)) {
 						$entryColumn[$paramKey] = $paramValue;
 					}
 				}
 			}
 			$currentColumn++;
-		}*/
+		}
 
 		// get current column
 		$currentColumn = $this->tableParams['col_offset'];
