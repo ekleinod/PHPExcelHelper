@@ -144,11 +144,11 @@ class PHPExcelHelper extends AppHelper {
 		$currentColumn = $this->tableParams['col_offset'];
 		foreach ($theEntries as $entry) {
 
-			if (array_key_exists('column', $entry) {
+			if (array_key_exists('column', $entry)) {
 				$this->tableParams['col_params'][$currentColumn] = $entry['column'];
 			}
 
-			if (array_key_exists('width', $entry) {
+			if (array_key_exists('width', $entry)) {
 				if ($entry['width'] == 'auto') {
 					$this->tableParams['auto_width'][] = $currentColumn;
 				} else {
@@ -191,24 +191,25 @@ class PHPExcelHelper extends AppHelper {
 
 		// use row params
 		foreach ($theRowParams as $paramKey => $paramValue) {
-			foreach ($theEntries as &$entryEdit) {
-				if (!array_key_exists($paramKey, $entryEdit)) {
-					$entryEdit[$paramKey] = $paramValue;
+			foreach ($theEntries as &$entryRow) {
+				if (!array_key_exists($paramKey, $entryRow)) {
+					$entryRow[$paramKey] = $paramValue;
 				}
 			}
 		}
 
 		// use column params
-		$currentColumn = $this->tableParams['col_offset'];
-		foreach ($theEntries as &$entryEdit) {
+/*		$currentColumn = $this->tableParams['col_offset'];
+		foreach ($theEntries as &$entryColumn) {
 			if (array_key_exists($currentColumn, $this->tableParams['col_params'])) {
 				foreach ($this->tableParams['col_params'][$currentColumn] as $paramKey => $paramValue) {
-					if (!array_key_exists($paramValue, $entryEdit)) {
-						$entryEdit[$paramKey] = $paramValue;
+					if (!array_key_exists($paramValue, $entryColumn)) {
+						$entryColumn[$paramKey] = $paramValue;
 					}
+				}
 			}
 			$currentColumn++;
-		}
+		}*/
 
 		// get current column
 		$currentColumn = $this->tableParams['col_offset'];
@@ -256,11 +257,11 @@ class PHPExcelHelper extends AppHelper {
 						break;
 
 					case 'color':
-						$this->xls->getActiveSheet()->getStyleByColumnAndRow($currentColumn, $this->row)->getFont()->getColor()->applyFromArray(array("rgb" => $entryValue));
+						$this->xls->getActiveSheet()->getStyleByColumnAndRow($currentColumn, $this->row)->applyFromArray(array('font' => array('color' => array('rgb' => $entryValue))));
 						break;
 
 					case 'bg-color':
-						$this->xls->getActiveSheet()->getStyleByColumnAndRow($currentColumn, $this->row)->getFill()->getColor()->applyFromArray(array("rgb" => $entryValue));
+						$this->xls->getActiveSheet()->getStyleByColumnAndRow($currentColumn, $this->row)->applyFromArray(array('fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => $entryValue))));
 						break;
 
 					case 'wrap':
