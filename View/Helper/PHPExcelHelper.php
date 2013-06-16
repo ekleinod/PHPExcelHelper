@@ -202,9 +202,6 @@ class PHPExcelHelper extends AppHelper {
 		$currentColumn = $this->tableParams['col_offset'];
 		foreach ($theEntries as &$entryColumn) {
 			if (array_key_exists($currentColumn, $this->tableParams['col_params'])) {
-
-		//throw new CakeException(print_r($this->tableParams['col_params'][$currentColumn], true));
-
 				foreach ($this->tableParams['col_params'][$currentColumn] as $paramKey => $paramValue) {
 					if (!array_key_exists($paramKey, $entryColumn)) {
 						$entryColumn[$paramKey] = $paramValue;
@@ -291,7 +288,7 @@ class PHPExcelHelper extends AppHelper {
 	/**
 	 * End table: sets params and styles that required data to be inserted.
 	 */
-	public function addTableFooter() {
+	private function addTableFooter() {
 
 		// auto width (for each column)
 		foreach ($this->tableParams['auto_width'] as $col) {
@@ -310,33 +307,25 @@ class PHPExcelHelper extends AppHelper {
 	}
 
 	/**
-	 * Write array of data to actual row starting from column defined by offset
-	 * Offset can be textual or numeric representation
-	 */
-	public function addData($theEntries, $offset = 0) {
-		// solve textual representation
-		if (!is_numeric($offset))
-			$offset = PHPExcel_Cell::columnIndexFromString($offset);
-
-		foreach ($theEntries as $d) {
-			$this->xls->getActiveSheet()->setCellValueByColumnAndRow($offset++, $this->row, $d);
-		}
-		$this->row++;
-	}
-
-	/**
 	 * Output file to browser
 	 */
 	public function output($filename = 'export.xlsx') {
+
+		// set table footer
+		$this->addTableFooter();
+
 		// set layout
 		$this->_View->layout = '';
+
 		// headers
 		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 		header('Content-Disposition: attachment;filename="'.$filename.'"');
 		header('Cache-Control: max-age=0');
+
 		// writer
 		$objWriter = PHPExcel_IOFactory::createWriter($this->xls, 'Excel2007');
 		$objWriter->save('php://output');
+
 		// clear memory
 		$this->xls->disconnectWorksheets();
 	}
