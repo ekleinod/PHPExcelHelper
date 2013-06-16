@@ -83,10 +83,10 @@ In your View add the lines:
 
 		// normal rows
 		$this->PHPExcel->addTableTexts('Values', '<text in cell>', '<name>', '<size in pt>',
-																	 '"normal" or "bold" or "bolder" or "lighter"',
-																	 '"normal" or "italic" or "oblique"',
-																	 '<rgb>', '<rgb>', '"true" or "false"',
-																	 '"auto" or <size in pt>', '<all attributes>');
+			'"normal" or "bold" or "bolder" or "lighter"',
+			'"normal" or "italic" or "oblique"',
+			'<rgb>', '<rgb>', '"true" or "false"',
+			'"auto" or <size in pt>', '<all attributes>');
 
 		$data = array();
 		$this->PHPExcel->addTableRow($data);
@@ -109,7 +109,8 @@ In your View add the lines:
 		$this->PHPExcel->addTableRow($data);
 
 		$data = array();
-			$data[] = array('text' => 'Cell definitions override row definitions override column definitions.', 'font-weight' => 'normal');
+			$data[] = array('text' => 'Cell definitions override row definitions override column definitions.',
+				'font-weight' => 'normal');
 		$this->PHPExcel->addTableRow($data);
 
 		// output
