@@ -6,16 +6,41 @@
 
 		// header
 		$header = array();
-		$header[] = array('label' => 'Header 1');
-		$header[] = array('label' => 'Header 2', 'font' => 'Sans', 'size' => '8', 'bold' => true, 'italic' => true, 'color' => '0000FF', 'width' => 'auto', 'filter' => true, 'wrap' => true);
-		$header[] = array('label' => 'Header 3', 'size' => '15', 'width' => 75, 'filter' => false, 'wrap' => false);
-		$header[] = array('label' => 'Header 4', 'bold' => false, 'italic' => false);
-		$header[] = array('label' => 'Header 5');
-
-		$this->PHPExcel->addTableHeader($header, array('bold' => true, 'size' => 10, 'filter' => true, 'color' => '008800'), 2);
+		$header[] = array('text' => 'Header 1', 'column' => array('font-weight' => 'bold'));
+		$header[] = array('text' => 'Header 2', 'font-name' => 'Serif', 'font-size' => '8', 'font-weight' => 'bold', 'font-style' => 'italic', 'color' => '0000FF', 'bg-color' => '00DD00', 'width' => 'auto', 'wrap' => true);
+		$header[] = array('text' => 'Header 3', 'font-size' => '15', 'width' => 75, 'wrap' => false);
+		$header[] = array('text' => 'Header 4', 'font-weight' => 'bold', 'font-style' => 'normal');
+		$header[] = array('text' => 'Header 5', 'wrap' => false);
+		$header[] = array('text' => 'Header 6', 'column' => array('wrap' => true));
+		$this->PHPExcel->addTableHeader($header, array('font-weight' => 'bold', 'font-size' => 10, 'color' => '008800', 'wrap' => true), 2, true);
 
 		// normal rows
+		$data = array();
+			$data[] = array('text' => 'I am text in the first column.');
+			$data[] = array('text' => 'I am text in the second column.');
+			$data[] = array('text' => 'I am text in the third column.');
+			$data[] = array('text' => 'I am text in the fourth column.');
+			$data[] = array('text' => 'I am text in the fifth column.');
+			$data[] = array('text' => 'I am text in the sixth column.');
+		$this->PHPExcel->addTableRow($data);
 
+		$data = array();
+			$data[] = array('text' => 'I am text in the first column.');
+			$data[] = array('text' => 'I am text in the second column.');
+			$data[] = array('text' => 'I am text in the third column.');
+			$data[] = array('text' => 'I am text in the fourth column.');
+			$data[] = array('text' => 'I am text in the fifth column.');
+			$data[] = array('text' => 'I am text in the sixth column.');
+		$this->PHPExcel->addTableRow($data, array('bg-color' => 'CCCCCC'));
+
+		$data = array();
+			$data[] = array('text' => 'I am text in the first column.', 'font-weight' => 'normal');
+			$data[] = array('text' => 'I am text in the second column.');
+			$data[] = array();
+			$data[] = array('text' => 'I am text in the fourth column.');
+			$data[] = array('text' => 'I am text in the fifth column.');
+			$data[] = array('text' => 'I am text in the sixth column.');
+		$this->PHPExcel->addTableRow($data);
 
 		// footer
 		$this->PHPExcel->addTableFooter();
