@@ -6,7 +6,7 @@
 
 		// header
 		$header = array();
-			$header[] = array('text' => 'Attribute', 'column' => array('font-weight' => 'bold'));
+			$header[] = array('text' => 'Attribute', 'width' => 20, 'column' => array('font-weight' => 'bold'));
 			$header[] = array('text' => 'text');
 			$header[] = array('text' => 'font-name');
 			$header[] = array('text' => 'font-size');

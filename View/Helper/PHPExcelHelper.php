@@ -140,18 +140,32 @@ class PHPExcelHelper extends AppHelper {
 			'auto_width' => array()
 		);
 
-		// store row params, set or store width
+		// store col params, set or store width
 		$currentColumn = $this->tableParams['col_offset'];
 		foreach ($theEntries as $entry) {
 
+			// column parameters
 			if (array_key_exists('column', $entry)) {
 				$this->tableParams['col_params'][$currentColumn] = $entry['column'];
 			}
 
+			// column width
+			$this->tableParams['auto_width'][$currentColumn] = false;
+
+			if (array_key_exists('width', $theRowParams)) {
+				if ($theRowParams['width'] == 'auto') {
+					$this->tableParams['auto_width'][$currentColumn] = true;
+				} else {
+					$this->tableParams['auto_width'][$currentColumn] = false;
+					$this->xls->getActiveSheet()->getColumnDimensionByColumn($currentColumn)->setWidth((float) $theRowParams['width']);
+				}
+			}
+
 			if (array_key_exists('width', $entry)) {
 				if ($entry['width'] == 'auto') {
-					$this->tableParams['auto_width'][] = $currentColumn;
+					$this->tableParams['auto_width'][$currentColumn] = true;
 				} else {
+					$this->tableParams['auto_width'][$currentColumn] = false;
 					$this->xls->getActiveSheet()->getColumnDimensionByColumn($currentColumn)->setWidth((float) $entry['width']);
 				}
 			}
@@ -291,8 +305,8 @@ class PHPExcelHelper extends AppHelper {
 	private function addTableFooter() {
 
 		// auto width (for each column)
-		foreach ($this->tableParams['auto_width'] as $col) {
-			$this->xls->getActiveSheet()->getColumnDimensionByColumn($col)->setAutoSize(true);
+		foreach ($this->tableParams['auto_width'] as $col => $value) {
+			$this->xls->getActiveSheet()->getColumnDimensionByColumn($col)->setAutoSize($value);
 		}
 
 		// filter (all columns)
