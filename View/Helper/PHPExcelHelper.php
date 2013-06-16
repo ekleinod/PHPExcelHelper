@@ -250,6 +250,7 @@ class PHPExcelHelper extends AppHelper {
 						break;
 
 					case 'font-style':
+						switch ($entryValue) {
 							case 'normal':
 								$this->xls->getActiveSheet()->getStyleByColumnAndRow($currentColumn, $this->row)->getFont()->setItalic(false);
 								break;
@@ -257,6 +258,7 @@ class PHPExcelHelper extends AppHelper {
 							case 'oblique':
 								$this->xls->getActiveSheet()->getStyleByColumnAndRow($currentColumn, $this->row)->getFont()->setItalic(true);
 								break;
+						}
 						break;
 
 					case 'color':
