@@ -15,12 +15,12 @@
 		$this->PHPExcel->addTableHeader($header, array('font-weight' => 'bold', 'font-size' => 10, 'color' => '008800', 'wrap' => true), 2, true);
 
 		// normal rows
-		$this->PHPExcel->addTableTexts(array('I am text in the first column.',
+		$this->PHPExcel->addTableTexts('I am text in the first column.',
 																	 'I am text in the second column.',
 																	 'I am text in the third column.',
 																	 'I am text in the fourth column.',
 																	 'I am text in the fifth column.',
-																	 'I am text in the sixth column.'));
+																	 'I am text in the sixth column.');
 
 		$data = array();
 			$data[] = array('text' => 'I am text in the first column.');

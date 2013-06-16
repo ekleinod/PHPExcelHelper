@@ -82,11 +82,11 @@ In your View add the lines:
 		$this->PHPExcel->addTableHeader($header, array('font-weight' => 'bold', 'font-size' => 10, 'width' => 'auto'));
 
 		// normal rows
-		$this->PHPExcel->addTableTexts(array('Values', '<text in cell>', '<name>', '<size in pt>',
-																			 '"normal" or "bold" or "bolder" or "lighter"',
-																			 '"normal" or "italic" or "oblique"',
-																			 '<rgb>', '<rgb>', '"true" or "false"',
-																			 '"auto" or <size in pt>', '<all attributes>'));
+		$this->PHPExcel->addTableTexts('Values', '<text in cell>', '<name>', '<size in pt>',
+																	 '"normal" or "bold" or "bolder" or "lighter"',
+																	 '"normal" or "italic" or "oblique"',
+																	 '<rgb>', '<rgb>', '"true" or "false"',
+																	 '"auto" or <size in pt>', '<all attributes>');
 
 		$data = array();
 		$this->PHPExcel->addTableRow($data);

@@ -306,9 +306,9 @@ class PHPExcelHelper extends AppHelper {
 	 *
 	 * @param theTexts texts for cells
 	 */
-	public function addTableTexts($theTexts) {
+	public function addTableTexts() {
 		$data = array();
-		foreach ($theTexts as $text) {
+		foreach (func_get_args() as $text) {
 			$data[] = array('text' => $text);
 		}
 		$this->addTableRow($data);
