@@ -20,19 +20,11 @@
 		$this->PHPExcel->addTableHeader($header, array('font-weight' => 'bold', 'font-size' => 10, 'width' => 'auto'));
 
 		// normal rows
-		$data = array();
-			$data[] = array('text' => 'Values');
-			$data[] = array('text' => '<text in cell>');
-			$data[] = array('text' => '<name>');
-			$data[] = array('text' => '<size in pt>');
-			$data[] = array('text' => '"normal" or "bold" or "bolder" or "lighter"');
-			$data[] = array('text' => '"normal" or "italic" or "oblique"');
-			$data[] = array('text' => '<rgb>');
-			$data[] = array('text' => '<rgb>');
-			$data[] = array('text' => '"true" or "false"');
-			$data[] = array('text' => '"auto" or <size in pt>');
-			$data[] = array('text' => '<all attributes>');
-		$this->PHPExcel->addTableRow($data);
+		$this->PHPExcel->addTableTexts(array('Values', '<text in cell>', '<name>', '<size in pt>',
+																			 '"normal" or "bold" or "bolder" or "lighter"',
+																			 '"normal" or "italic" or "oblique"',
+																			 '<rgb>', '<rgb>', '"true" or "false"',
+																			 '"auto" or <size in pt>', '<all attributes>'));
 
 		$data = array();
 		$this->PHPExcel->addTableRow($data);

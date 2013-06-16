@@ -300,6 +300,21 @@ class PHPExcelHelper extends AppHelper {
 	}
 
 	/**
+	 * Adds a table row with the gicen data as texts.
+	 *
+	 * No formatting can be given to a cell, only the text is inserted.
+	 *
+	 * @param theTexts texts for cells
+	 */
+	public function addTableTexts($theTexts) {
+		$data = array();
+		foreach ($theTexts as $text) {
+			$data[] = array('text' => $text);
+		}
+		$this->addTableRow($data);
+	}
+
+	/**
 	 * End table: sets params and styles that required data to be inserted.
 	 */
 	private function addTableFooter() {
