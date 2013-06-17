@@ -329,7 +329,7 @@ class PHPExcelHelper extends AppHelper {
 			$this->xls->getActiveSheet()->setAutoFilter(sprintf('%s%d:%s%d',
 					PHPExcel_Cell::stringFromColumnIndex($this->tableParams['col_offset']),
 					$this->tableParams['header_row'],
-					PHPExcel_Cell::stringFromColumnIndex($this->tableParams['col_offset'] + $this->tableParams['col_count']),
+					PHPExcel_Cell::stringFromColumnIndex($this->tableParams['col_offset'] + $this->tableParams['col_count'] - 1),
 					$this->tableParams['row_count']));
 		}
 
