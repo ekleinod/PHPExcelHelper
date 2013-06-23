@@ -48,11 +48,13 @@ class PHPExcelHelper extends AppHelper {
 	 *
 	 * @param theFontName default font name (optional)
 	 * @param theFontSize default font size (optional)
+	 * @param theVAlignment default vertical alignment (optional)
+	 * @param theHAlignment default horizontal alignment (optional)
 	 */
-	public function createWorksheet($theFontName = null, $theFontSize = null) {
+	public function createWorksheet($theFontName = null, $theFontSize = null, $theVAlignment = null, $theHAlignment = null) {
 		$this->loadEssentials();
 		$this->xls = new PHPExcel();
-		$this->setDefaultFont($theFontName, $theFontSize);
+		$this->setDefaultFont($theFontName, $theFontSize, $theVAlignment, $theHAlignment);
 		$this->setRow(1);
 	}
 
@@ -95,6 +97,21 @@ class PHPExcelHelper extends AppHelper {
 		}
 		if ($theFontSize != null) {
 			$this->xls->getDefaultStyle()->getFont()->setSize($theFontSize);
+		}
+	}
+
+	/**
+	 * Set default alignment.
+	 *
+	 * @param theVAlignment default vertical alignment (optional)
+	 * @param theHAlignment default horizontal alignment (optional)
+	 */
+	public function setDefaultAlignment($theVAlignment = null, $theHAlignment = null) {
+		if ($theVAlignment != null) {
+			$this->xls->getDefaultStyle()->getAlignment()->setVertical($theVAlignment);
+		}
+		if ($theHAlignment != null) {
+			$this->xls->getDefaultStyle()->getAlignment()->setHorizontal($theHAlignment);
 		}
 	}
 
