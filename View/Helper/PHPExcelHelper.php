@@ -50,12 +50,25 @@ class PHPExcelHelper extends AppHelper {
 	 * @param theFontSize default font size (optional)
 	 * @param theVAlignment default vertical alignment (optional)
 	 * @param theHAlignment default horizontal alignment (optional)
+	 * @param theColOffset column offset (optional)
 	 */
-	public function createWorksheet($theFontName = null, $theFontSize = null, $theVAlignment = null, $theHAlignment = null) {
+	public function createWorksheet($theFontName = null, $theFontSize = null, $theVAlignment = null, $theHAlignment = null, $theColOffset = 0) {
 		$this->loadEssentials();
 		$this->xls = new PHPExcel();
 		$this->setDefaultFont($theFontName, $theFontSize, $theVAlignment, $theHAlignment);
-		$this->setRow(1);
+
+		// set internal params that need to be processed after data are inserted
+		$this->tableParams = array(
+			'current_row' => 1,
+			'header_row' => -1,
+			'col_offset' => is_numeric($theColOffset) ? (int) $theColOffset : PHPExcel_Cell::columnIndexFromString($theColOffset),
+			'col_count' => 0,
+			'row_count' => 0,
+			'filter' => false,
+			'col_params' => array(),
+			'auto_width' => array()
+		);
+
 	}
 
 	/**
@@ -74,15 +87,6 @@ class PHPExcelHelper extends AppHelper {
 		if (!class_exists('PHPExcel')) {
 			throw new CakeException('Vendor class PHPExcel not found!');
 		}
-	}
-
-	/**
-	 * Set row pointer.
-	 *
-	 * @param theRow row to set to
-	 */
-	public function setRow($theRow) {
-		$this->row = (int) $theRow;
 	}
 
 	/**
@@ -141,21 +145,12 @@ class PHPExcelHelper extends AppHelper {
 	 *
 	 * @param theEntries data holding entries
 	 * @param theRowParams parameters for entire row
-	 * @param theColOffset column offset
 	 * @param theFilter switch on filter?
 	 */
-	public function addTableHeader($theEntries, $theRowParams = array(), $theColOffset = 0, $theFilter = false) {
+	public function addTableHeader($theEntries, $theRowParams = array(), $theFilter = false) {
 
-		// set internal params that need to be processed after data are inserted
-		$this->tableParams = array(
-			'header_row' => $this->row,
-			'col_offset' => is_numeric($theColOffset) ? (int) $theColOffset : PHPExcel_Cell::columnIndexFromString($theColOffset),
-			'col_count' => 0,
-			'row_count' => 0,
-			'filter' => ($theFilter == true),
-			'col_params' => array(),
-			'auto_width' => array()
-		);
+		$this->tableParams['header_row'] = $this->tableParams['current_row'];
+		$this->tableParams['filter'] = ($theFilter == true);
 
 		// store col params, set or store width
 		$currentColumn = $this->tableParams['col_offset'];
@@ -253,26 +248,26 @@ class PHPExcelHelper extends AppHelper {
 				switch ($entryKey) {
 
 					case 'text':
-						$this->xls->getActiveSheet()->setCellValueByColumnAndRow($currentColumn, $this->row, $entryValue);
+						$this->xls->getActiveSheet()->setCellValueByColumnAndRow($currentColumn, $this->tableParams['current_row'], $entryValue);
 						break;
 
 					case 'font-name':
-						$this->xls->getActiveSheet()->getStyleByColumnAndRow($currentColumn, $this->row)->getFont()->setName($entryValue);
+						$this->xls->getActiveSheet()->getStyleByColumnAndRow($currentColumn, $this->tableParams['current_row'])->getFont()->setName($entryValue);
 						break;
 
 					case 'font-size':
-						$this->xls->getActiveSheet()->getStyleByColumnAndRow($currentColumn, $this->row)->getFont()->setSize($entryValue);
+						$this->xls->getActiveSheet()->getStyleByColumnAndRow($currentColumn, $this->tableParams['current_row'])->getFont()->setSize($entryValue);
 						break;
 
 					case 'font-weight':
 						switch ($entryValue) {
 							case 'normal':
 							case 'lighter':
-								$this->xls->getActiveSheet()->getStyleByColumnAndRow($currentColumn, $this->row)->getFont()->setBold(false);
+								$this->xls->getActiveSheet()->getStyleByColumnAndRow($currentColumn, $this->tableParams['current_row'])->getFont()->setBold(false);
 								break;
 							case 'bold':
 							case 'bolder':
-								$this->xls->getActiveSheet()->getStyleByColumnAndRow($currentColumn, $this->row)->getFont()->setBold(true);
+								$this->xls->getActiveSheet()->getStyleByColumnAndRow($currentColumn, $this->tableParams['current_row'])->getFont()->setBold(true);
 								break;
 						}
 						break;
@@ -280,26 +275,26 @@ class PHPExcelHelper extends AppHelper {
 					case 'font-style':
 						switch ($entryValue) {
 							case 'normal':
-								$this->xls->getActiveSheet()->getStyleByColumnAndRow($currentColumn, $this->row)->getFont()->setItalic(false);
+								$this->xls->getActiveSheet()->getStyleByColumnAndRow($currentColumn, $this->tableParams['current_row'])->getFont()->setItalic(false);
 								break;
 							case 'italic':
 							case 'oblique':
-								$this->xls->getActiveSheet()->getStyleByColumnAndRow($currentColumn, $this->row)->getFont()->setItalic(true);
+								$this->xls->getActiveSheet()->getStyleByColumnAndRow($currentColumn, $this->tableParams['current_row'])->getFont()->setItalic(true);
 								break;
 						}
 						break;
 
 					case 'color':
-						$this->xls->getActiveSheet()->getStyleByColumnAndRow($currentColumn, $this->row)->applyFromArray(array('font' => array('color' => array('rgb' => $entryValue))));
+						$this->xls->getActiveSheet()->getStyleByColumnAndRow($currentColumn, $this->tableParams['current_row'])->applyFromArray(array('font' => array('color' => array('rgb' => $entryValue))));
 						break;
 
 					case 'bg-color':
-						$this->xls->getActiveSheet()->getStyleByColumnAndRow($currentColumn, $this->row)->applyFromArray(array('fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => $entryValue))));
+						$this->xls->getActiveSheet()->getStyleByColumnAndRow($currentColumn, $this->tableParams['current_row'])->applyFromArray(array('fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => $entryValue))));
 						break;
 
 					case 'wrap':
 						if ($entryValue == true) {
-							$this->xls->getActiveSheet()->getStyle(sprintf('%1$s%2$d:%1$s%2$d', PHPExcel_Cell::stringFromColumnIndex($currentColumn), $this->row))->getAlignment()->setWrapText(true);
+							$this->xls->getActiveSheet()->getStyle(sprintf('%1$s%2$d:%1$s%2$d', PHPExcel_Cell::stringFromColumnIndex($currentColumn), $this->tableParams['current_row']))->getAlignment()->setWrapText(true);
 						}
 						break;
 
@@ -309,11 +304,9 @@ class PHPExcelHelper extends AppHelper {
 			$currentColumn++;
 		}
 
-		$this->row++;
+		$this->tableParams['current_row']++;
 		$this->tableParams['row_count']++;
-		if (count($theEntries) > $this->tableParams['col_count']) {
-			$this->tableParams['col_count'] = count($theEntries);
-		}
+		$this->tableParams['col_count'] = max($this->tableParams['col_count'], count($theEntries));
 	}
 
 	/**
