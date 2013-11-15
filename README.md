@@ -32,15 +32,16 @@ In order to use the functions, follow these steps:
 You have to use the following basic methods:
 
 		// start table
-		$this->PHPExcel->createWorksheet();
-		$this->PHPExcel->setDefaultFont('<name>', <size>);
+		$this->PHPExcel->createWorksheet(['<name>'], [<size>], [<valignment>], [<halignment>], [<offset>]);
+		$this->PHPExcel->setDefaultFont(['<name>'], [<size>]);
+		$this->PHPExcel->setDefaultAlignment([<valignment>], [<halignment>]);
 
 		// header
 		$header = array();
 			$header[] = array(<header definition>, <col definition>);
 			$header[] = array(<header definition>);
 			$header[] = array(...);
-		$this->PHPExcel->addTableHeader($header, array(<row definition>), <offset>, <filter>);
+		$this->PHPExcel->addTableHeader($header, [array(<row definition>)], [<filter>]);
 
 		// data rows
 		$this->PHPExcel->addTableTexts(<texts>);
@@ -49,7 +50,7 @@ You have to use the following basic methods:
 		$this->PHPExcel->addTableRow(...);
 
 		// output
-		$this->PHPExcel->output(<filename>);
+		$this->PHPExcel->output([<filename>]);
 
 ## Example
 

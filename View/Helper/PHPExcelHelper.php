@@ -14,7 +14,7 @@ App::uses('AppHelper', 'View/Helper');
  * @author Ekkart Kleinod https://github.com/ekleinod/
  * <https://github.com/ekleinod/PHPExcelHelper>
  *
- * @version 1.0.1
+ * @version 1.1
  */
 class PHPExcelHelper extends AppHelper {
 
@@ -49,7 +49,8 @@ class PHPExcelHelper extends AppHelper {
 	public function createWorksheet($theFontName = null, $theFontSize = null, $theVAlignment = null, $theHAlignment = null, $theColOffset = 0) {
 		$this->loadEssentials();
 		$this->xls = new PHPExcel();
-		$this->setDefaultFont($theFontName, $theFontSize, $theVAlignment, $theHAlignment);
+		$this->setDefaultFont($theFontName, $theFontSize);
+		$this->setDefaultAlignment($theVAlignment, $theHAlignment);
 
 		// set internal params that need to be processed after data are inserted
 		$this->tableParams = array(
