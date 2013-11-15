@@ -1,8 +1,7 @@
 <?php
 
 		// start table
-		$this->PHPExcel->createWorksheet();
-		$this->PHPExcel->setDefaultFont('Calibri', 11);
+		$this->PHPExcel->createWorksheet(null, 11, null, null, 2);
 
 		// header
 		$header = array();
@@ -12,7 +11,7 @@
 		$header[] = array('text' => 'Header 4', 'font-weight' => 'bold', 'font-style' => 'normal');
 		$header[] = array('text' => 'Header 5', 'wrap' => false);
 		$header[] = array('text' => 'Header 6', 'column' => array('wrap' => true));
-		$this->PHPExcel->addTableHeader($header, array('font-weight' => 'bold', 'font-size' => 10, 'color' => '008800', 'wrap' => true), 2, true);
+		$this->PHPExcel->addTableHeader($header, array('font-weight' => 'bold', 'font-size' => 10, 'color' => '008800', 'wrap' => true), true);
 
 		// normal rows
 		$this->PHPExcel->addTableTexts('I am text in the first column.',
