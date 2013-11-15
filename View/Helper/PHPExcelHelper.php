@@ -25,12 +25,6 @@ class PHPExcelHelper extends AppHelper {
 	public $xls = null;
 
 	/**
-	 * Pointer to actual row
-	 * @var int
-	 */
-	private $row = 1;
-
-	/**
 	 * Internal table params
 	 * @var array
 	 */
