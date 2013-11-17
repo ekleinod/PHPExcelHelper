@@ -61,7 +61,7 @@ class PHPExcelHelper extends AppHelper {
 			'row_count' => 0,
 			'filter' => false,
 			'col_params' => array(),
-			'auto_width' => array()
+			'col_width' => array()
 		);
 
 	}
@@ -157,24 +157,14 @@ class PHPExcelHelper extends AppHelper {
 			}
 
 			// column width
-			$this->tableParams['auto_width'][$currentColumn] = false;
+			$this->tableParams['col_width'][$currentColumn] = false;
 
 			if (array_key_exists('width', $theRowParams)) {
-				if ($theRowParams['width'] == 'auto') {
-					$this->tableParams['auto_width'][$currentColumn] = true;
-				} else {
-					$this->tableParams['auto_width'][$currentColumn] = false;
-					$this->xls->getActiveSheet()->getColumnDimensionByColumn($currentColumn)->setWidth((float) $theRowParams['width']);
-				}
+				$this->tableParams['col_width'][$currentColumn] = $theRowParams['width'];
 			}
 
 			if (array_key_exists('width', $entry)) {
-				if ($entry['width'] == 'auto') {
-					$this->tableParams['auto_width'][$currentColumn] = true;
-				} else {
-					$this->tableParams['auto_width'][$currentColumn] = false;
-					$this->xls->getActiveSheet()->getColumnDimensionByColumn($currentColumn)->setWidth((float) $entry['width']);
-				}
+				$this->tableParams['col_width'][$currentColumn] = $entry['width'];
 			}
 
 			$currentColumn++;
@@ -324,9 +314,20 @@ class PHPExcelHelper extends AppHelper {
 	 */
 	private function addTableFooter() {
 
-		// auto width (for each column)
-		foreach ($this->tableParams['auto_width'] as $col => $value) {
-			$this->xls->getActiveSheet()->getColumnDimensionByColumn($col)->setAutoSize($value);
+		// width (for each column)
+		foreach ($this->tableParams['col_width'] as $col => $value) {
+
+			if ($value) {
+				if ($value == 'auto') {
+					$this->xls->getActiveSheet()->getColumnDimensionByColumn($col)->setAutoSize(true);
+				} else {
+					$this->xls->getActiveSheet()->getColumnDimensionByColumn($col)->setAutoSize(false);
+					$this->xls->getActiveSheet()->getColumnDimensionByColumn($col)->setWidth((float) $value);
+				}
+			} else {
+				$this->xls->getActiveSheet()->getColumnDimensionByColumn($col)->setAutoSize(false);
+			}
+
 		}
 
 		// filter (all columns)
