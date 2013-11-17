@@ -22,7 +22,7 @@ class PHPExcelHelper extends AppHelper {
 	 * Instance of PHPExcel class
 	 * @var object
 	 */
-	public $xls = null;
+	private $xls = null;
 
 	/**
 	 * Internal table params
@@ -36,6 +36,17 @@ class PHPExcelHelper extends AppHelper {
 	public function __construct(View $view, $settings = array()) {
 		parent::__construct($view, $settings);
 		$this->loadEssentials();
+	}
+
+	/**
+	 * Returns instance of PHPExcel class.
+	 *
+	 * This is helpful if you want to use direct functions of PHPExcel.
+	 *
+	 * @return instance of PHPExcel class
+	 */
+	public function getXLS() {
+		return $this->xls;
 	}
 
 	/**
