@@ -35,6 +35,7 @@ class PHPExcelHelper extends AppHelper {
 	 */
 	public function __construct(View $view, $settings = array()) {
 		parent::__construct($view, $settings);
+		$this->loadEssentials();
 	}
 
 	/**
@@ -47,7 +48,6 @@ class PHPExcelHelper extends AppHelper {
 	 * @param theColOffset column offset (optional)
 	 */
 	public function createWorksheet($theFontName = null, $theFontSize = null, $theVAlignment = null, $theHAlignment = null, $theColOffset = 0) {
-		$this->loadEssentials();
 		$this->xls = new PHPExcel();
 		$this->setDefaultFont($theFontName, $theFontSize);
 		$this->setDefaultAlignment($theVAlignment, $theHAlignment);
