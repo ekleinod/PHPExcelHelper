@@ -364,8 +364,8 @@ class PHPExcelHelper extends AppHelper {
 		$this->_View->layout = '';
 
 		// headers
-		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-		header('Content-Disposition: attachment;filename="'.$filename.'"');
+		header('Content-Type: application/vnd.ms-excel');
+		header(sprintf('Content-Disposition: attachment;filename="%s"', $filename));
 		header('Cache-Control: max-age=0');
 
 		// writer
