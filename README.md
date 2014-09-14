@@ -121,3 +121,16 @@ In your View add the lines:
 
 Please don't hesitate to contact me, leave issues, fork this project etc. if you want to.
 
+## Versions
+
+All versions are released as releases:
+
+https://github.com/ekleinod/phpexcelhelper/releases/
+
+### Version 0.1
+
+Released: 2014-09-14
+
+Code: https://github.com/ekleinod/phpexcelhelper/releases/tag/0.1
+
+- initial release, basic funtionality
